@@ -45,9 +45,11 @@ async def start_run(
         status="pending",
         metadata_=payload.metadata,
     )
+    from sqlalchemy.orm.attributes import set_committed_value
     db.add(run)
     await db.commit()
     await db.refresh(run)
+    set_committed_value(run, "steps", [])
 
     # Enqueue to Redis Streams for the engine worker to pick up
     await redis.xadd(
