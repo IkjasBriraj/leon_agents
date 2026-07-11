@@ -54,7 +54,9 @@ class Workflow(Base):
     runs: Mapped[list["Run"]] = relationship("Run", back_populates="workflow")  # type: ignore[name-defined]
 
     def __repr__(self) -> str:
-        return f"<Workflow {self.name} [{self.status}]>"
+        name = self.__dict__.get("name", "unknown")
+        status = self.__dict__.get("status", "unknown")
+        return f"<Workflow {name} [{status}]>"
 
 
 class WorkflowNode(Base):
@@ -96,14 +98,18 @@ class WorkflowNode(Base):
     # Relationships
     workflow: Mapped[Workflow] = relationship("Workflow", back_populates="nodes")
     outgoing_edges: Mapped[list["WorkflowEdge"]] = relationship(
-        "WorkflowEdge", foreign_keys="WorkflowEdge.source_node_id", back_populates="source_node"
+        "WorkflowEdge", foreign_keys="WorkflowEdge.source_node_id", back_populates="source_node",
+        cascade="all, delete-orphan"
     )
     incoming_edges: Mapped[list["WorkflowEdge"]] = relationship(
-        "WorkflowEdge", foreign_keys="WorkflowEdge.target_node_id", back_populates="target_node"
+        "WorkflowEdge", foreign_keys="WorkflowEdge.target_node_id", back_populates="target_node",
+        cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:
-        return f"<WorkflowNode {self.node_key} [{self.node_type}]>"
+        key = self.__dict__.get("node_key", "unknown")
+        node_type = self.__dict__.get("node_type", "unknown")
+        return f"<WorkflowNode {key} [{node_type}]>"
 
 
 class WorkflowEdge(Base):
@@ -146,4 +152,7 @@ class WorkflowEdge(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<WorkflowEdge {self.source_node_id} → {self.target_node_id} [{self.edge_type}]>"
+        source = self.__dict__.get("source_node_id", "unknown")
+        target = self.__dict__.get("target_node_id", "unknown")
+        edge_type = self.__dict__.get("edge_type", "unknown")
+        return f"<WorkflowEdge {source} → {target} [{edge_type}]>"

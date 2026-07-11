@@ -58,4 +58,7 @@ class Agent(Base):
     memories: Mapped[list["Memory"]] = relationship("Memory", back_populates="agent")  # type: ignore[name-defined]
 
     def __repr__(self) -> str:
-        return f"<Agent {self.name} ({self.model_provider}/{self.model_name})>"
+        name = self.__dict__.get("name", "unknown")
+        provider = self.__dict__.get("model_provider", "unknown")
+        model = self.__dict__.get("model_name", "unknown")
+        return f"<Agent {name} ({provider}/{model})>"

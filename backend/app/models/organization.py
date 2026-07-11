@@ -30,4 +30,5 @@ class Organization(Base):
     api_keys: Mapped[list["ApiKey"]] = relationship("ApiKey", back_populates="organization")  # type: ignore[name-defined]
 
     def __repr__(self) -> str:
-        return f"<Organization {self.slug}>"
+        slug = self.__dict__.get("slug", "unknown")
+        return f"<Organization {slug}>"

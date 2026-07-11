@@ -60,7 +60,7 @@ class Run(Base):
 
     # HITL pause/resume state
     current_node_id: Mapped[uuid.UUID | None] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("workflow_nodes.id"), nullable=True
+        UUID(as_uuid=True), ForeignKey("workflow_nodes.id", ondelete="SET NULL"), nullable=True
     )
     checkpoint_state: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
@@ -79,7 +79,9 @@ class Run(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<Run {self.id} [{self.status}]>"
+        run_id = self.__dict__.get("id", "unknown")
+        status = self.__dict__.get("status", "unknown")
+        return f"<Run {run_id} [{status}]>"
 
 
 class RunStep(Base):
@@ -105,7 +107,7 @@ class RunStep(Base):
     # Step identification
     step_index: Mapped[int] = mapped_column(Integer, nullable=False)
     node_id: Mapped[uuid.UUID | None] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("workflow_nodes.id"), nullable=True
+        UUID(as_uuid=True), ForeignKey("workflow_nodes.id", ondelete="SET NULL"), nullable=True
     )
     node_key: Mapped[str | None] = mapped_column(String(255), nullable=True)
     step_type: Mapped[str] = mapped_column(String(50), nullable=False)
@@ -145,7 +147,10 @@ class RunStep(Base):
     run: Mapped[Run] = relationship("Run", back_populates="steps")
 
     def __repr__(self) -> str:
-        return f"<RunStep #{self.step_index} [{self.step_type}] run={self.run_id}>"
+        step_index = self.__dict__.get("step_index", "unknown")
+        step_type = self.__dict__.get("step_type", "unknown")
+        run_id = self.__dict__.get("run_id", "unknown")
+        return f"<RunStep #{step_index} [{step_type}] run={run_id}>"
 
 
 class RunCheckpoint(Base):
@@ -173,7 +178,9 @@ class RunCheckpoint(Base):
     run: Mapped[Run] = relationship("Run", back_populates="checkpoints")
 
     def __repr__(self) -> str:
-        return f"<RunCheckpoint step={self.step_index} reason={self.reason}>"
+        step_index = self.__dict__.get("step_index", "unknown")
+        reason = self.__dict__.get("reason", "unknown")
+        return f"<RunCheckpoint step={step_index} reason={reason}>"
 
 
 class Secret(Base):
@@ -199,7 +206,9 @@ class Secret(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
     def __repr__(self) -> str:
-        return f"<Secret {self.name} [{self.category}]>"
+        name = self.__dict__.get("name", "unknown")
+        category = self.__dict__.get("category", "unknown")
+        return f"<Secret {name} [{category}]>"
 
 
 class AuditLog(Base):
@@ -230,4 +239,6 @@ class AuditLog(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<AuditLog {self.action} by user={self.user_id}>"
+        action = self.__dict__.get("action", "unknown")
+        user_id = self.__dict__.get("user_id", "unknown")
+        return f"<AuditLog {action} by user={user_id}>"

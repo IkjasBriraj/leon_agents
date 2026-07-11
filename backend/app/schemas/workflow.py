@@ -34,8 +34,6 @@ class WorkflowNodeResponse(WorkflowNodeBase):
 # ─── Edge Schemas ──────────────────────────────────────────────────────────────
 
 class WorkflowEdgeBase(BaseModel):
-    source_node_id: uuid.UUID
-    target_node_id: uuid.UUID
     edge_type: str = "default"
     condition: dict[str, Any] | None = None
     label: str | None = None
@@ -44,12 +42,15 @@ class WorkflowEdgeBase(BaseModel):
 
 
 class WorkflowEdgeCreate(WorkflowEdgeBase):
-    pass
+    source_node_id: str
+    target_node_id: str
 
 
 class WorkflowEdgeResponse(WorkflowEdgeBase):
     id: uuid.UUID
     workflow_id: uuid.UUID
+    source_node_id: uuid.UUID
+    target_node_id: uuid.UUID
 
     model_config = {"from_attributes": True}
 

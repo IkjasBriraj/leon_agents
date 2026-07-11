@@ -46,7 +46,9 @@ class Tool(Base):
     agent_tools: Mapped[list["AgentTool"]] = relationship("AgentTool", back_populates="tool")
 
     def __repr__(self) -> str:
-        return f"<Tool {self.name} [{self.category}]>"
+        name = self.__dict__.get("name", "unknown")
+        category = self.__dict__.get("category", "unknown")
+        return f"<Tool {name} [{category}]>"
 
 
 class AgentTool(Base):

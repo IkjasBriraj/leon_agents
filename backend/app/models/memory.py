@@ -75,5 +75,7 @@ class Memory(Base):
     agent: Mapped["Agent"] = relationship("Agent", back_populates="memories")  # type: ignore[name-defined]
 
     def __repr__(self) -> str:
-        preview = self.content[:40] + "..." if len(self.content) > 40 else self.content
-        return f"<Memory [{self.memory_type}] {preview!r}>"
+        content = self.__dict__.get("content", "")
+        memory_type = self.__dict__.get("memory_type", "unknown")
+        preview = content[:40] + "..." if len(content) > 40 else content
+        return f"<Memory [{memory_type}] {preview!r}>"

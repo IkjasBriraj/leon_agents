@@ -37,7 +37,8 @@ class User(Base):
     api_keys: Mapped[list["ApiKey"]] = relationship("ApiKey", back_populates="created_by_user")
 
     def __repr__(self) -> str:
-        return f"<User {self.email}>"
+        email = self.__dict__.get("email", "unknown")
+        return f"<User {email}>"
 
 
 class ApiKey(Base):
@@ -64,4 +65,5 @@ class ApiKey(Base):
     created_by_user: Mapped[User | None] = relationship("User", back_populates="api_keys")
 
     def __repr__(self) -> str:
-        return f"<ApiKey {self.key_prefix}...>"
+        prefix = self.__dict__.get("key_prefix", "unknown")
+        return f"<ApiKey {prefix}...>"

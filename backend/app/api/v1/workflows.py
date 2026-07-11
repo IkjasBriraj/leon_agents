@@ -198,6 +198,7 @@ async def update_workflow(
 
     workflow.version += 1
     await db.commit()
+    await db.refresh(workflow)
 
     # Re-fetch fully loaded
     final_result = await db.execute(
