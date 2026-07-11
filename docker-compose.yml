@@ -1,0 +1,83 @@
+version: "3.8"
+
+services:
+  # ─── PostgreSQL Database with pgvector ──────────────────────────────────────
+  postgres:
+    image: ankane/pgvector:v0.5.1
+    container_name: agentcraft-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: agentcraft
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d agentcraft"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Redis (Queue & WebSocket State) ────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: agentcraft-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ─── Backend API & Background Engine Worker ─────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: agentcraft-backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://postgres:password123@postgres:5432/agentcraft
+      - REDIS_URL=redis://redis:6379/0
+      - OLLAMA_BASE_URL=http://host.docker.internal:11434
+      - SECRET_KEY=super-secret-key-change-in-production-12345
+      - ENCRYPTION_KEY=enc-key-32bytes-must-be-secure-123456
+      - ENVIRONMENT=production
+      - DEBUG=false
+    ports:
+      - "8000:8000"
+    # Wait for DB, run migrations, then start FastAPI app
+    command: >
+      sh -c "alembic upgrade head && python -m app.main"
+
+  # ─── Frontend Next.js Dashboard ─────────────────────────────────────────────
+  frontend:
+    image: node:20-slim
+    container_name: agentcraft-frontend
+    restart: always
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000/api/v1
+    command: sh -c "npm install --legacy-peer-deps && npm run dev"
+
+volumes:
+  pgdata:
+  redisdata:

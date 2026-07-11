@@ -1,0 +1,691 @@
+/**
+ * AgentCraft — Global Stylesheet
+ *
+ * IBM Carbon Design System (g100 dark theme) adapted for CSS custom properties.
+ * Uses IBM Plex Sans / IBM Plex Mono typography.
+ * All color tokens follow Carbon's Gray 100 palette.
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
+
+/* ─── Carbon g100 Design Tokens ──────────────────────────────────────────── */
+
+:root {
+  /* Carbon g100 backgrounds */
+  --cds-background:           #161616;
+  --cds-layer-01:             #262626;
+  --cds-layer-02:             #393939;
+  --cds-layer-03:             #525252;
+  --cds-layer-hover-01:       #333333;
+  --cds-layer-hover-02:       #474747;
+  --cds-layer-active-01:      #525252;
+  --cds-field-01:             #262626;
+  --cds-field-02:             #393939;
+
+  /* Carbon g100 borders */
+  --cds-border-subtle-00:     #393939;
+  --cds-border-subtle-01:     #525252;
+  --cds-border-strong-01:     #6f6f6f;
+  --cds-border-interactive:   #4589ff;
+
+  /* Carbon g100 text */
+  --cds-text-primary:         #f4f4f4;
+  --cds-text-secondary:       #c6c6c6;
+  --cds-text-placeholder:     #6f6f6f;
+  --cds-text-helper:          #8d8d8d;
+  --cds-text-on-color:        #ffffff;
+  --cds-text-inverse:         #161616;
+  --cds-text-disabled:        rgba(244,244,244,0.25);
+
+  /* Carbon interactive colors */
+  --cds-interactive:          #4589ff;
+  --cds-link-primary:         #78a9ff;
+  --cds-link-primary-hover:   #a6c8ff;
+  --cds-focus:                #ffffff;
+  --cds-highlight:            #002d9c;
+
+  /* Carbon button */
+  --cds-button-primary:       #0f62fe;
+  --cds-button-primary-hover: #0353e9;
+  --cds-button-primary-active:#002d9c;
+  --cds-button-secondary:     #6f6f6f;
+  --cds-button-secondary-hover:#606060;
+  --cds-button-danger:        #da1e28;
+  --cds-button-danger-hover:  #ba1b23;
+
+  /* Carbon support/status */
+  --cds-support-error:        #ff8389;
+  --cds-support-success:      #42be65;
+  --cds-support-warning:      #f1c21b;
+  --cds-support-info:         #4589ff;
+
+  --cds-support-error-inverse:    #da1e28;
+  --cds-support-success-inverse:  #24a148;
+  --cds-support-warning-inverse:  #f1c21b;
+  --cds-support-info-inverse:     #0043ce;
+
+  /* Carbon notification backgrounds */
+  --cds-notification-info-bg:     rgba(69,137,255,0.10);
+  --cds-notification-success-bg:  rgba(66,190,101,0.10);
+  --cds-notification-warning-bg:  rgba(241,194,27,0.10);
+  --cds-notification-error-bg:    rgba(255,131,137,0.10);
+
+  /* Node type colors — accented from Carbon palette */
+  --node-agent:      #4589ff;
+  --node-tool:       #ff832b;
+  --node-condition:  #f1c21b;
+  --node-hitl:       #a56eff;
+  --node-memory:     #08bdba;
+  --node-code:       #525252;
+  --node-start:      #42be65;
+  --node-end:        #da1e28;
+
+  /* Status colors */
+  --status-pending:  #8d8d8d;
+  --status-running:  #4589ff;
+  --status-paused:   #f1c21b;
+  --status-complete: #42be65;
+  --status-failed:   #da1e28;
+
+  /* Layout */
+  --sidebar-width:   256px;
+  --topbar-height:   48px;
+
+  /* Carbon shadows */
+  --shadow-sm:       0 2px 6px rgba(0,0,0,0.3);
+  --shadow-md:       0 4px 8px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.3);
+  --shadow-lg:       0 12px 28px rgba(0,0,0,0.5);
+
+  /* Radii — Carbon typography stays sharp; panels/cards get smooth rounded corners */
+  --radius-none:     0;
+  --radius-sm:       8px;
+  --radius-md:       12px;
+  --radius-lg:       16px;
+  --radius-full:     9999px;
+
+  /* Carbon motion — productive */
+  --transition:      110ms cubic-bezier(0.2, 0, 0.38, 0.9);
+  --transition-slow: 240ms cubic-bezier(0.2, 0, 0.38, 0.9);
+
+  /* Carbon spacing scale (rem) */
+  --spacing-01: 0.125rem;
+  --spacing-02: 0.25rem;
+  --spacing-03: 0.5rem;
+  --spacing-04: 0.75rem;
+  --spacing-05: 1rem;
+  --spacing-06: 1.5rem;
+  --spacing-07: 2rem;
+  --spacing-08: 2.5rem;
+  --spacing-09: 3rem;
+}
+
+/* ─── Reset & Base ────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--cds-background);
+  color: var(--cds-text-primary);
+  line-height: 1.42857; /* Carbon body-01 */
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--cds-highlight);
+  color: var(--cds-text-on-color);
+}
+
+/* ─── Scrollbar (Carbon-style thin) ───────────────────────────────────────── */
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--cds-border-subtle-01); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cds-border-strong-01); }
+
+/* ─── Typography (Carbon type scale) ──────────────────────────────────────── */
+
+h1 { font-size: 1.75rem;  font-weight: 300; line-height: 1.28; letter-spacing: 0; }   /* heading-04 */
+h2 { font-size: 1.25rem;  font-weight: 400; line-height: 1.4;  letter-spacing: 0; }   /* heading-03 */
+h3 { font-size: 1rem;     font-weight: 600; line-height: 1.375; letter-spacing: 0; }   /* heading-02 */
+h4 { font-size: 0.875rem; font-weight: 600; line-height: 1.28; letter-spacing: 0.01em; } /* heading-01 */
+
+code, kbd, pre, .mono { font-family: 'IBM Plex Mono', 'Menlo', monospace; }
+
+/* ─── Layout Shell ────────────────────────────────────────────────────────── */
+
+.app-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: var(--topbar-height) 1fr;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.app-topbar {
+  grid-column: 1 / -1;
+  background: var(--cds-layer-01);
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--spacing-05);
+  gap: var(--spacing-05);
+  z-index: 50;
+}
+
+.app-sidebar {
+  background: var(--cds-layer-01);
+  border-right: 1px solid var(--cds-border-subtle-00);
+  overflow-y: auto;
+  padding: var(--spacing-03) 0;
+  z-index: 40;
+}
+
+.app-main {
+  overflow-y: auto;
+  background: var(--cds-background);
+}
+
+/* ─── Carbon Page Header ──────────────────────────────────────────────────── */
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--spacing-06);
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+  margin-bottom: var(--spacing-06);
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--cds-text-primary);
+  margin-bottom: var(--spacing-02);
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: var(--cds-text-secondary);
+  line-height: 1.42857;
+}
+
+/* ─── Carbon Tile (replaces glass-card) ───────────────────────────────────── */
+
+.glass-card {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+.glass-card:hover {
+  background: var(--cds-layer-hover-01);
+  border-color: var(--cds-border-subtle-01);
+}
+
+/* Carbon Tile - no hover */
+.cds-tile {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-05);
+}
+
+/* ─── Gradient Text ───────────────────────────────────────────────────────── */
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--cds-button-primary), #a56eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Status Badges (Carbon Tag style) ────────────────────────────────────── */
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: var(--spacing-02);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem; font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.status-badge::before {
+  content: ''; width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.status-pending  { color: var(--status-pending);  background: rgba(141,141,141,0.15); }
+.status-running  { color: var(--status-running);  background: rgba(69,137,255,0.15); animation: pulse-dot 1.5s infinite; }
+.status-paused   { color: var(--status-paused);   background: rgba(241,194,27,0.15); }
+.status-complete { color: var(--status-complete); background: rgba(66,190,101,0.15); }
+.status-completed{ color: var(--status-complete); background: rgba(66,190,101,0.15); }
+.status-failed   { color: var(--status-failed);   background: rgba(218,30,40,0.15); }
+.status-archived { color: var(--status-pending);  background: rgba(141,141,141,0.15); }
+.status-active   { color: var(--status-complete); background: rgba(66,190,101,0.15); }
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ─── Buttons (Carbon Button) ─────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-03);
+  padding: calc(var(--spacing-03) - 1px) var(--spacing-05);
+  border-radius: var(--radius-none);
+  font-size: 0.875rem; font-weight: 400;
+  letter-spacing: 0.01em;
+  border: none;
+  cursor: pointer; user-select: none;
+  transition: all var(--transition);
+  white-space: nowrap;
+  min-height: 32px;
+}
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-primary {
+  background: var(--cds-button-primary);
+  color: var(--cds-text-on-color);
+  border: none;
+}
+.btn-primary:hover:not(:disabled) {
+  background: var(--cds-button-primary-hover);
+}
+.btn-primary:active:not(:disabled) {
+  background: var(--cds-button-primary-active);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--cds-link-primary);
+  border: 1px solid transparent;
+  padding: calc(var(--spacing-03) - 2px) var(--spacing-05);
+}
+.btn-ghost:hover:not(:disabled) {
+  background: var(--cds-layer-hover-01);
+  color: var(--cds-link-primary-hover);
+  border-color: var(--cds-border-subtle-00);
+}
+
+.btn-danger {
+  background: var(--cds-button-danger);
+  color: var(--cds-text-on-color);
+  border: none;
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--cds-button-danger-hover);
+}
+
+.btn-secondary {
+  background: var(--cds-button-secondary);
+  color: var(--cds-text-on-color);
+  border: none;
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--cds-button-secondary-hover);
+}
+
+.btn-sm { padding: 2px 12px; font-size: 0.75rem; min-height: 24px; }
+.btn-lg { padding: 10px 24px; font-size: 0.875rem; min-height: 48px; }
+.btn-icon { padding: 6px; width: 32px; height: 32px; }
+
+/* ─── Input / Form (Carbon TextInput) ─────────────────────────────────────── */
+
+.input {
+  width: 100%; padding: 0 var(--spacing-05);
+  height: 40px;
+  background: var(--cds-field-01);
+  border: none;
+  border-bottom: 1px solid var(--cds-border-strong-01);
+  border-radius: var(--radius-none);
+  color: var(--cds-text-primary);
+  font-size: 0.875rem; font-family: inherit;
+  transition: border-color var(--transition), outline var(--transition);
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+}
+.input:focus {
+  border-bottom-color: var(--cds-border-interactive);
+  outline: 2px solid var(--cds-border-interactive);
+}
+.input:disabled {
+  background: var(--cds-field-01);
+  color: var(--cds-text-disabled);
+  cursor: not-allowed;
+  border-bottom-color: var(--cds-border-subtle-00);
+}
+.input::placeholder { color: var(--cds-text-placeholder); }
+
+textarea.input { resize: vertical; min-height: 80px; padding: var(--spacing-03) var(--spacing-05); height: auto; }
+select.input { padding-right: var(--spacing-07); appearance: auto; }
+
+.input-label {
+  display: block; margin-bottom: var(--spacing-02);
+  font-size: 0.75rem; font-weight: 400;
+  color: var(--cds-text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.input-helper {
+  font-size: 0.75rem;
+  color: var(--cds-text-helper);
+  margin-top: var(--spacing-01);
+}
+
+/* ─── Sidebar Nav (Carbon SideNav) ────────────────────────────────────────── */
+
+.nav-item {
+  display: flex; align-items: center; gap: var(--spacing-04);
+  padding: var(--spacing-03) var(--spacing-05);
+  color: var(--cds-text-secondary);
+  font-size: 0.875rem; font-weight: 400;
+  cursor: pointer; transition: all var(--transition);
+  text-decoration: none;
+  border-left: 4px solid transparent;
+  letter-spacing: 0.01em;
+}
+.nav-item:hover {
+  background: var(--cds-layer-hover-01);
+  color: var(--cds-text-primary);
+}
+.nav-item.active {
+  background: var(--cds-layer-active-01);
+  color: var(--cds-text-on-color);
+  border-left-color: var(--cds-border-interactive);
+  font-weight: 600;
+}
+.nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ─── Metric Cards (Carbon StructuredList / Tile) ─────────────────────────── */
+
+.metric-card {
+  padding: var(--spacing-05);
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition);
+}
+.metric-card:hover { background: var(--cds-layer-hover-01); }
+.metric-value { font-size: 2.25rem; font-weight: 300; letter-spacing: 0; line-height: 1.2; }
+.metric-label { font-size: 0.75rem; color: var(--cds-text-helper); margin-top: var(--spacing-02); letter-spacing: 0.01em; }
+.metric-change { font-size: 0.75rem; font-weight: 400; margin-top: var(--spacing-03); }
+.metric-change.positive { color: var(--cds-support-success); }
+.metric-change.negative { color: var(--cds-support-error); }
+
+/* ─── Node Styles (React Flow) ────────────────────────────────────────────── */
+
+.react-flow__node-agentNode,
+.react-flow__node-toolNode,
+.react-flow__node-conditionNode,
+.react-flow__node-hitlNode,
+.react-flow__node-memoryNode,
+.react-flow__node-startEndNode,
+.react-flow__node-codeNode {
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+.react-flow__handle {
+  width: 8px !important;
+  height: 8px !important;
+  border: 2px solid var(--cds-layer-01) !important;
+}
+
+.react-flow__edge-path { stroke-width: 1.5; }
+.react-flow__background { background: var(--cds-background); }
+.react-flow__controls {
+  background: var(--cds-layer-01) !important;
+  border: 1px solid var(--cds-border-subtle-00) !important;
+  border-radius: var(--radius-sm) !important;
+}
+.react-flow__controls-button {
+  background: transparent !important;
+  border-color: var(--cds-border-subtle-00) !important;
+  fill: var(--cds-text-secondary) !important;
+}
+.react-flow__controls-button:hover {
+  background: var(--cds-layer-hover-01) !important;
+}
+.react-flow__minimap {
+  background: var(--cds-layer-01) !important;
+  border: 1px solid var(--cds-border-subtle-00) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+/* ─── Trace Timeline (Carbon ProgressIndicator style) ─────────────────────── */
+
+.trace-step {
+  display: flex; gap: var(--spacing-04);
+  padding: var(--spacing-04);
+  cursor: pointer;
+  transition: background var(--transition);
+  position: relative;
+  border-left: 2px solid var(--cds-border-subtle-00);
+  margin-left: var(--spacing-05);
+}
+.trace-step:hover { background: var(--cds-layer-hover-01); }
+.trace-step.active {
+  background: var(--cds-notification-info-bg);
+  border-left-color: var(--cds-border-interactive);
+}
+
+/* ─── Code Block (Carbon CodeSnippet) ─────────────────────────────────────── */
+
+.code-block {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-00);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-05);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.8125rem;
+  line-height: 1.42857;
+  overflow-x: auto;
+  color: var(--cds-text-primary);
+}
+
+/* ─── Modal (Carbon Modal pattern) ───────────────────────────────────────── */
+
+.cds-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 22, 22, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-05);
+  z-index: 50;
+}
+
+.cds-modal {
+  background: var(--cds-layer-01);
+  border: 1px solid var(--cds-border-subtle-01);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.cds-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--spacing-06) var(--spacing-06) var(--spacing-05);
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+}
+
+.cds-modal-title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--cds-text-primary);
+  line-height: 1.4;
+}
+
+.cds-modal-body {
+  padding: var(--spacing-06);
+}
+
+.cds-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-03);
+  padding: var(--spacing-05) var(--spacing-06);
+  border-top: 1px solid var(--cds-border-subtle-00);
+}
+
+.cds-modal-close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--cds-text-secondary);
+  padding: var(--spacing-02);
+  transition: color var(--transition);
+  line-height: 1;
+}
+.cds-modal-close:hover { color: var(--cds-text-primary); }
+
+/* ─── Animations (Carbon motion: productive) ──────────────────────────────── */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-8px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-fade-in   { animation: fadeIn 0.11s cubic-bezier(0.2, 0, 0.38, 0.9); }
+.animate-slide-in  { animation: slideIn 0.11s cubic-bezier(0.2, 0, 0.38, 0.9); }
+
+.skeleton {
+  background: linear-gradient(90deg, var(--cds-layer-01) 25%, var(--cds-layer-02) 50%, var(--cds-layer-01) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── HITL Approval Banner ────────────────────────────────────────────────── */
+
+.hitl-banner {
+  background: var(--cds-notification-warning-bg);
+  border-left: 3px solid var(--cds-support-warning);
+  padding: var(--spacing-05) var(--spacing-06);
+  animation: fadeIn 0.24s cubic-bezier(0.2, 0, 0.38, 0.9);
+}
+
+/* ─── Carbon Inline Notification ──────────────────────────────────────────── */
+
+.cds-notification {
+  display: flex; align-items: flex-start; gap: var(--spacing-04);
+  padding: var(--spacing-04) var(--spacing-05);
+  border-left: 3px solid;
+  font-size: 0.875rem;
+  border-radius: var(--radius-sm);
+}
+.cds-notification.info    { background: var(--cds-notification-info-bg); border-left-color: var(--cds-support-info); color: var(--cds-text-primary); }
+.cds-notification.success { background: var(--cds-notification-success-bg); border-left-color: var(--cds-support-success); color: var(--cds-text-primary); }
+.cds-notification.warning { background: var(--cds-notification-warning-bg); border-left-color: var(--cds-support-warning); color: var(--cds-text-primary); }
+.cds-notification.error   { background: var(--cds-notification-error-bg); border-left-color: var(--cds-support-error); color: var(--cds-text-primary); }
+
+/* ─── Carbon DataTable ─────────────────────────────────────────────────────── */
+
+.cds-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.cds-table thead tr {
+  background: var(--cds-layer-02);
+  border-bottom: 1px solid var(--cds-border-subtle-01);
+}
+.cds-table thead th {
+  padding: var(--spacing-03) var(--spacing-05);
+  font-size: 0.75rem; font-weight: 600;
+  color: var(--cds-text-secondary);
+  text-align: left;
+  letter-spacing: 0.01em;
+}
+.cds-table tbody tr {
+  border-bottom: 1px solid var(--cds-border-subtle-00);
+  transition: background var(--transition);
+}
+.cds-table tbody tr:hover { background: var(--cds-layer-hover-01); }
+.cds-table tbody td {
+  padding: var(--spacing-03) var(--spacing-05);
+  color: var(--cds-text-primary);
+}
+
+/* ─── Carbon Section / Panel divider ─────────────────────────────────────── */
+
+.cds-section-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--cds-text-secondary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-04);
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────────────── */
+
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sr-only  { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+.divider  { height: 1px; background: var(--cds-border-subtle-00); margin: var(--spacing-03) 0; }
+
+/* ─── Carbon Tag Component ────────────────────────────────────────────────── */
+
+.cds-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px;
+  font-size: 0.6875rem; font-weight: 400;
+  letter-spacing: 0.01em;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.cds-tag.blue     { background: rgba(69,137,255,0.2); color: #a6c8ff; }
+.cds-tag.green    { background: rgba(66,190,101,0.2); color: #6fdc8c; }
+.cds-tag.purple   { background: rgba(165,110,255,0.2); color: #d4bbff; }
+.cds-tag.teal     { background: rgba(8,189,186,0.2); color: #3ddbd9; }
+.cds-tag.magenta  { background: rgba(238,95,162,0.2); color: #ff7eb6; }
+.cds-tag.red      { background: rgba(218,30,40,0.2); color: #ff8389; }
+.cds-tag.cyan     { background: rgba(51,180,219,0.2); color: #82cfff; }
+.cds-tag.warm-gray{ background: rgba(141,141,141,0.2); color: #c6c6c6; }
+.cds-tag.orange   { background: rgba(255,131,43,0.2); color: #ffb784; }
+.cds-tag.yellow   { background: rgba(241,194,27,0.2); color: #f1c21b; }
+
+/* ─── Carbon Type helpers ─────────────────────────────────────────────────── */
+
+.cds-label-01 { font-size: 0.75rem; font-weight: 400; line-height: 1.33; letter-spacing: 0.02em; }
+.cds-body-01  { font-size: 0.875rem; font-weight: 400; line-height: 1.42857; }
+.cds-body-02  { font-size: 1rem; font-weight: 400; line-height: 1.5; }
+.cds-helper-01{ font-size: 0.75rem; font-weight: 400; line-height: 1.33; letter-spacing: 0.02em; color: var(--cds-text-helper); }
+
+/* ─── Icon box (Carbon icon slot) ────────────────────────────────────────── */
+
+.cds-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
