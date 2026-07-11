@@ -29,7 +29,7 @@ class RunStepResponse(BaseModel):
     state_before: dict | None
     state_after: dict | None
     state_delta: dict | None
-    memories_retrieved: dict | None
+    memories_retrieved: list[dict[str, Any]] | dict[str, Any] | None = None
     started_at: datetime
     completed_at: datetime | None
     duration_ms: int | None

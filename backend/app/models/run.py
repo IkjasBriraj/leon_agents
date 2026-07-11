@@ -131,7 +131,7 @@ class RunStep(Base):
     state_delta: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
 
     # Memory operations
-    memories_retrieved: Mapped[dict | None] = mapped_column(JSONB, nullable=True)
+    memories_retrieved: Mapped[list | dict | None] = mapped_column(JSONB, nullable=True)
     memories_stored: Mapped[list] = mapped_column(ARRAY(UUID(as_uuid=True)), default=list)
 
     # Timing
